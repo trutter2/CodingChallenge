@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <fieldset style="width: 200px;">
+        <legend>Roman Numeral Converter</legend>
+        <form>
+            <label for="input">Enter Roman Numeral:</label>
+            <input type="text" id="input" onkeyup="this.value = this.value.toUpperCase();">
+            <br><br>
+            <button type="button" onclick="convertToNum();">Convert!</button>
+        </form>
+    </fieldset>
+    <br><br>
+    <fieldset style="width: 80px">
+        <legend>Value:</legend>
+        <p id="sOutput"></p>
+    </fieldset>
+
+
+    <!--javascript-->
+    <script>
+        function convertToNum() {
+            let romanNum = document.getElementById("input").value;
+            const romanNumList = ["M", "D", "C", "L", "X", "V", "I"];
+            const numListCorr = [1000, 500, 100, 50, 10, 5, 1];
+            let totalCount = 0;
+
+            //find first number first always so you can compare
+            let cFirst = romanNum.charAt(0);
+
+            //check for all valid characters
+            for (let iCount = 0; iCount < romanNum.length; ++iCount) {
+                let cCurr = romanNum.charAt(iCount);
+                //makes sure there is a valid character
+                if (romanNumList.indexOf(cCurr) == -1) {
+                    alert("Enter a Roman Numeral (M,D,C,L,X,V or I)");
+                    document.getElementById("input").focus();
+                    return;
+                }
+            }
+            //made it! you have all valid characters
+
+            //handle one character roman numerals
+            if (romanNum.length == 1) {
+                let sOutput = numListCorr[romanNumList.indexOf(cFirst)];
+                document.getElementById("sOutput").innerHTML = sOutput;
+
+            }
+            // everything that is not one char long
+            else {
+                for (let iCount = 0; iCount < romanNum.length; iCount++) {
+                    //find current letter in list.
+                    let cCurr = romanNum.charAt(iCount);
+                    let cNext = romanNum.charAt(iCount + 1);
+                    //connect the character to the numeric value.
+                    let iCurr = numListCorr[romanNumList.indexOf(cCurr)];
+                    let iNext = numListCorr[romanNumList.indexOf(cNext)];
+
+                    if (iCurr >= iNext) {
+                        totalCount += iCurr;
+                    }
+                    else if (iCurr < iNext) {
+                        totalCount -= iCurr;
+                    }
+                    else if (iCurr && !iNext) {
+                        totalCount += iCurr;
+                    }
+                }
+                document.getElementById("sOutput").innerHTML = totalCount;
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
